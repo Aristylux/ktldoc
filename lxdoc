@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+import sys
+
+from src.user import checkOptions
+
+# --- Check args ---
+
+checkOptions(sys.argv[1:])

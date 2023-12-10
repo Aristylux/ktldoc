@@ -5,9 +5,11 @@ def checkOptions(args: list[str]) -> int:
     
 
 def printHelp():
-    print("USAGE: ")
+    print("Usage: lxdoc [OPTION]...")
 
-    print("OPTIONS:")
-    print("-h,\t--help, print this help")
-    print("-kt\t, latex documentation for Kotlin")
-    print("-py\t, latex documentation from Python")
+    print("if no option: kt by default")
+
+    print("Options:")
+    print("  -h,  --help  print this help")
+    print("  -kt          latex documentation for Kotlin")
+    print("  -py          latex documentation from Python")
