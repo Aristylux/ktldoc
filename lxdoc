@@ -4,6 +4,7 @@ import sys
 
 from src.user import checkOptions
 from src.files import *
+from src.extract import *
 
 # --- Check args ---
 
@@ -16,5 +17,9 @@ files = getFiles(".kt")
 
 # Print the list of files
 
-for file in files:
-    print(f"{file}")
+# for file in files:
+#     print(f"{file}")
+
+print(files[6])
+
+extractData(files[6])

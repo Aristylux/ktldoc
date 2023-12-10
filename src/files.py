@@ -38,9 +38,9 @@ def navigateToFinalDir(source_dir: str):
                 
             
 def listFiles(directory: str, extension: str) -> list[str]:
-    items = []
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith(extension):
-                items.append(os.path.join(root, file))
-    return items
+    files = []
+    for root, _, filenames in os.walk(directory):
+        for filename in filenames:
+            if filename.endswith(extension):
+                files.append(os.path.join(root, filename))
+    return files
