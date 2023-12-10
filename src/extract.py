@@ -1,11 +1,14 @@
 import os
 import re
 
-def extractData(file_path: str):
+def extractData(file_path: str) -> tuple[list,list]:
 
     # Get the filename without extension
     filename = os.path.splitext(os.path.basename(file_path))[0]
 
+    comments = []
+    functions = []
+        
     with open(file_path, 'r') as file:
         format_function = False
         inside_comment = False
@@ -45,10 +48,15 @@ def extractData(file_path: str):
                     current_function += line.strip()
             
             if format_function:
-                print(f"Extract Comment:\n{current_comment}")
-                print(f"Generate Function:\n{current_function}")
+                #print(f"Extract Comment:\n{current_comment}")
+                #print(f"Generate Function:\n{current_function}")
+                comments.append(current_comment)
+                functions.append(current_function)
                 #extracted_comment, params, interruptions, returns, notes = extract_comment(current_comment)
                 #generate_latex(file_name + "." + format_kotlin_function(current_function), extracted_comment, params, interruptions, returns)
                 format_function = False
-                print("------------------")
+                #print("------------------")
                 current_function = ""
+                current_comment = ""
+
+    return comments, functions

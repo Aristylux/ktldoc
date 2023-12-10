@@ -22,4 +22,4 @@ files = getFiles(".kt")
 
 print(files[6])
 
-extractData(files[6])
+comments, functions = extractData(files[6])
