@@ -23,3 +23,7 @@ files = getFiles(".kt")
 print(files[6])
 
 comments, functions = extractData(files[6])
+
+functionComment = extractComment(comments[0])
+
+print(functionComment)
