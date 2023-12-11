@@ -2,23 +2,28 @@ import os
 import re
 
 from src.function import Function
+from src.dataFile import DataFile
 
-def extractData(file_path: str) -> tuple[list,list]:
+def extractData(file_path: str) -> DataFile:
+    datafile = DataFile()
 
     # Get the filename without extension
-    filename = os.path.splitext(os.path.basename(file_path))[0]
+    file = os.path.splitext(os.path.basename(file_path))
+    namename = file[0]
+    extension = file[1]
 
-    comments = []
-    functions = []
-        
+    datafile.setFilename(namename)
+    datafile.setExtension(extension)
+
     with open(file_path, 'r') as file:
         format_function = False
         inside_comment = False
         check_function = False
-        current_comment = ""
         inside_function = False
+        current_comment = ""
         current_function = ""
 
+        # Read line by line
         for line in file:
             if line.lstrip().startswith('/**') and not re.search('[a-zA-Z]', line):
                 inside_comment = True
@@ -52,16 +57,13 @@ def extractData(file_path: str) -> tuple[list,list]:
             if format_function:
                 #print(f"Extract Comment:\n{current_comment}")
                 #print(f"Generate Function:\n{current_function}")
-                comments.append(current_comment)
-                functions.append(current_function)
-                #extracted_comment, params, interruptions, returns, notes = extract_comment(current_comment)
-                #generate_latex(file_name + "." + format_kotlin_function(current_function), extracted_comment, params, interruptions, returns)
+                #data.append([current_comment, current_function])
+                datafile.addRawData(current_comment, current_function)
                 format_function = False
-                #print("------------------")
                 current_function = ""
                 current_comment = ""
 
-    return comments, functions
+    return datafile
 
 def extractParam(line: str) -> tuple[str, str]:
     parts = line.split()
@@ -108,11 +110,10 @@ def extractFunction(functionDeclaration: str, function: Function) -> None:
     # Extract and format parameters
     parameters = getParameters(functionDeclaration)
 
-    print(f"\nfunction: {functionDeclaration}")
-    print(f"--{functionName}({parameters})\n")
+    # print(f"\nfunction: {functionDeclaration}")
+    # print(f"--{functionName}({parameters})\n")
 
     # Format the result
-    #f"{functionName}({parameters})"
     function.addFunctionName(functionName)
     function.addFunctionParameters(parameters)
 

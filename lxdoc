@@ -23,12 +23,12 @@ files = getFiles(".kt")
 
 print(files[6])
 
-comments, functions = extractData(files[6])
+data = extractData(files[6])
 
-if len(comments) == len(functions):
-    for i in range(len(comments)):
-        function = extractComment(comments[i])
-        extractFunction(functions[i], function)
+rawData = data.getRawData()
+for i in range(len(rawData)):
+    function = extractComment(rawData[i][0])
+    extractFunction(rawData[i][1], function)
 
-        #print(function)
-        generateLatex(function)
+    #print(function)
+    generateLatex(function)
