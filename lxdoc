@@ -29,6 +29,12 @@ rawData = data.getRawData()
 for i in range(len(rawData)):
     function = extractComment(rawData[i][0])
     extractFunction(rawData[i][1], function)
+    data.addFunction(function)
 
     #print(function)
-    generateLatexFunction(function, data.fileName)
+
+#print(data)
+
+latexContent = generateLatex(data)
+
+print(latexContent)
