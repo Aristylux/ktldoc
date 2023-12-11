@@ -99,6 +99,55 @@ def extractComment(comment: str):
     function.addDescription(extracted_comment)
     return function
 
+def extractFunction(functionDeclaration: str) -> str:
+    # print(declaration)
+    # Extract the function name
+    functionNameMatch = re.search(r'\bfun\s+([\w.]+)\s*\(', functionDeclaration)
+    if functionNameMatch:
+        functionName = functionNameMatch.group(1)
+    else:
+        return "Invalid function declaration"
+    
+    print(f"\nfunction: {functionDeclaration}")
+
+    # Extract and format parameters
+    parameters = getParameters(functionDeclaration)
+
+    print(f"--{functionName}({parameters})\n")
+
+    # Format the result
+    return f"{functionName}({parameters})"
+
+def getParameters(functionDeclaration: str):
+    formatFun = functionDeclaration.replace(" ", "")
+    result = ""
+    save_parameters = False
+    in_parameter = False
+
+    for char in formatFun:
+        # Enter in '(...)'
+        if char == '(' and not save_parameters:
+            save_parameters = True
+            in_parameter = True
+        # End of the function "fun .. (...) : ... {"
+        elif char == '{' and save_parameters:
+            return result
+        # Inside '(...)'
+        elif save_parameters:
+            #print(f"inside param: {char}")
+            if char == ':':
+                in_parameter = False
+            elif char == ',' and not in_parameter:
+                in_parameter = True
+            
+            if in_parameter:
+                if char == ' ' or char == ',':
+                    result += ', '
+                else:
+                    result += char
+
+
+    return result
 
 class Function:
     def __init__(self) -> None:
@@ -125,11 +174,17 @@ class Function:
         self.notes.append(noteDesc)
 
     def __str__(self) -> str:
-        return f"""Function(\n
-        Description  ='{self.description}'
-        Parameters   ={self.parameters}
-        Interruptions={self.interruptions}
-        Returns      ={self.returns}
-        Notes        ={self.notes}
+
+        param = "[\n"
+        for paramName, paramDesc in self.parameters:
+            param += f"\t('{paramName}' - '{paramDesc}')\n"
+        param += "                  ]"
+
+        return f"""Function(
+   Description  ='{self.description}'
+   Parameters   = {param}
+   Interruptions= {self.interruptions}
+   Returns      = {self.returns}
+   Notes        = {self.notes}
         )"""
         

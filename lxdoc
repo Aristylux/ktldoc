@@ -24,6 +24,9 @@ print(files[6])
 
 comments, functions = extractData(files[6])
 
-functionComment = extractComment(comments[0])
+if len(comments) == len(functions):
+    for i in range(len(comments)):
+        function = extractComment(comments[i])
+        extractFunction(functions[i])
 
-print(functionComment)
+        #print(function)
