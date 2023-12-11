@@ -5,6 +5,7 @@ import sys
 from src.user import checkOptions
 from src.files import *
 from src.extract import *
+from src.generate import *
 
 # --- Check args ---
 
@@ -29,4 +30,5 @@ if len(comments) == len(functions):
         function = extractComment(comments[i])
         extractFunction(functions[i], function)
 
-        print(function)
+        #print(function)
+        generateLatex(function)

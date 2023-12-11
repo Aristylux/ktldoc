@@ -1,6 +1,8 @@
 import os
 import re
 
+from src.function import Function
+
 def extractData(file_path: str) -> tuple[list,list]:
 
     # Get the filename without extension
@@ -74,7 +76,7 @@ def extractParam(line: str) -> tuple[str, str]:
 def extractReturn(line: str) -> str:
     return ' '.join(line.split()[1:])
 
-def extractComment(comment: str):
+def extractComment(comment: str) -> Function:
     function = Function()
     extracted_comment = ""
 
@@ -99,7 +101,7 @@ def extractComment(comment: str):
     function.addDescription(extracted_comment)
     return function
 
-def extractFunction(functionDeclaration: str, function) -> None:
+def extractFunction(functionDeclaration: str, function: Function) -> None:
     # Extract the function name
     functionName = getFunctionName(functionDeclaration)
 
@@ -155,50 +157,3 @@ def getParameters(functionDeclaration: str) -> list[str]:
     parameters.append(temp)
     return parameters
 
-class Function:
-    def __init__(self) -> None:
-        self.functionName = ""
-        self.functionParameters = ""
-        self.description = ""
-        self.parameters = []
-        self.interruptions = []
-        self.returns = []
-        self.notes = []
-        pass
-
-    def addFunctionName(self, functionName: str):
-        self.functionName = functionName
-
-    def addFunctionParameters(self, parameters: list[str]):
-        self.functionParameters = parameters
-
-    def addDescription(self, description: str):
-        self.description = description
-
-    def addParameter(self, param : tuple[str, str]):
-        self.parameters.append(param)
-
-    def addInterruption(self, interruption: tuple[str, str]):
-        self.interruptions.append(interruption)
-
-    def addReturn(self, returnDesc: str):
-        self.returns.append(returnDesc)
-
-    def addNote(self, noteDesc: str):
-        self.notes.append(noteDesc)
-
-    def __str__(self) -> str:
-
-        param = "[\n"
-        for paramName, paramDesc in self.parameters:
-            param += f"\t('{paramName}' - '{paramDesc}')\n"
-        param += "                  ]"
-
-        return f"""Function:{self.functionName}({self.functionParameters})(
-   Description  ='{self.description}'
-   Parameters   = {param}
-   Interruptions= {self.interruptions}
-   Returns      = {self.returns}
-   Notes        = {self.notes}
-        )"""
-        
