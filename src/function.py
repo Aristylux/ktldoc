@@ -30,6 +30,14 @@ class Function:
     def addNote(self, noteDesc: str):
         self.notes.append(noteDesc)
 
+    def getFonctionDec(self):
+        nbrParams = len(self.functionParameters)
+        params = "("
+        for paramIndex in range(nbrParams - 1):
+            params += f"{self.functionParameters[paramIndex]}, "
+        params += f"{self.functionParameters[nbrParams - 1]})"
+        return f"{self.functionName}{params}"
+
     def __str__(self) -> str:
 
         param = "[\n"

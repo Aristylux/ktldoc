@@ -31,4 +31,4 @@ for i in range(len(rawData)):
     extractFunction(rawData[i][1], function)
 
     #print(function)
-    generateLatex(function)
+    generateLatexFunction(function, data.fileName)

@@ -1,7 +1,7 @@
 from .function import Function
 
-def generateLatex(function: Function):
-    latex_output = f"\\begin{{func}}{{{function.functionName}}}\n"
+def generateLatexFunction(function: Function, filename: str):
+    latex_output = f"\\begin{{func}}{{{filename}.{function.getFonctionDec()}}}\n"
 
     if function.description:
         latex_output += f"    \\item {function.description}\n"
