@@ -33,6 +33,14 @@ def generateLatexFunction(function: Function, filename: str) -> str:
         for ret_description in function.returns:
             latexOutput += f"    \\item \\ret{{{ret_description}}}\n"
 
+    if function.urls:
+        for url in function.urls:
+            latexOutput += f"    \\item \\url{{{url}}}\n"
+
+    if function.enums:
+        for enum_name, enum_description in function.enums:
+            latexOutput += f"    \\item \\enum{{{enum_name}}}{{{enum_description}}}\n"
+
     latexOutput += "\\end{func}\n"
     return latexOutput
 

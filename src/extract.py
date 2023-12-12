@@ -2,7 +2,7 @@ import os
 import re
 
 from src.function import Function
-from src.dataFile import DataFile
+from src.dataFile import DataFile, FileType
 
 def extractData(file_path: str) -> DataFile:
     datafile = DataFile()
@@ -37,14 +37,19 @@ def extractData(file_path: str) -> DataFile:
                 current_comment += line
 
             elif check_function:
-                # in one line
+                # FUNCTION In one line
                 if re.search(r'\bfun\b', line) and (re.search(r'[\s]*{', line) or re.search(r'{', line)): #and line.strip().endswith('{'):
                     current_function = line.strip()
                     format_function = True
-
+                # FUNCTION More than one line
                 elif re.search(r'\bfun\b', line):
                     current_function = line.strip()
                     inside_function = True
+                # ENUM
+                elif re.search(r'\benum class\b', line):
+                    current_function = line.strip()
+                    datafile.setType(FileType.ENUM)
+                    format_function = True
                 
                 elif inside_function and (re.search(r'[\s]*{', line) or re.search(r'{', line)):
                     current_function += line.strip()
@@ -96,6 +101,10 @@ def extractComment(comment: str) -> Function:
             function.addReturn(extractReturn(line.strip()))
         elif re.match(r'\s*@note', line):
             function.addNote(extractReturn(line.strip()))
+        elif re.match(r'\s*@url', line):
+            function.addUrl(extractReturn(line.strip()))
+        elif re.match(r'\s*@enum', line):
+            function.addEnum(extractParam(line.strip()))
         elif re.match(r'\s*\*', line):
             continue
         else:
@@ -123,6 +132,23 @@ def getFunctionName(functionDeclaration: str) -> str:
         return functionNameMatch.group(1)
     else:
         return "Invalid function declaration"
+
+def extractEnum(enum: str, function: Function) -> None:
+    enumName = getEnumName(enum)
+    function.addFunctionName(enumName)
+
+def getEnumName(enumDeclaration: str) -> str:
+    # Define a regular expression pattern to match "enum class NAME" or "enum class NAME {"
+    pattern = r'enum\s+class\s+(\w+)\s*\{?'
+
+    # Use re.search to find the match in the input string
+    EnumNamematch = re.search(pattern, enumDeclaration)
+
+    # Check if there is a match and return the captured name group
+    if EnumNamematch:
+        return EnumNamematch.group(1)
+    else:
+        return "Invald enum declaration"
 
 def getParameters(functionDeclaration: str) -> list[str]:
     formatFun = functionDeclaration.replace(" ", "")
