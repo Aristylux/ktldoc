@@ -46,7 +46,10 @@ def generateLatexFunction(function: Function, filename: str) -> str:
         for enum_name, enum_description in function.enums:
             latexOutput += f"    \\item \\enum{{{enum_name}}}{{{enum_description}}}\n"
 
-    latexOutput += "\\end{func}\n"
+    if dec2 == "":
+        latexOutput += "\\end{funcsplit}\n"
+    else:
+        latexOutput += "\\end{func}\n"
     return latexOutput
 
 def generateLatexMain(files: list[DataFile]) -> str:
@@ -69,14 +72,16 @@ def splitAtLength(string: str, maxlen: int =100) -> tuple[str, str]:
     part1 = []
     part2 = []
     current_length = 0
+    on_part2 = False
 
     for word in words:
         # Check if adding the current word exceeds the maximum length
-        if current_length + len(word) + 1 <= maxlen:
+        if current_length + len(word) + 1 <= maxlen and not on_part2:
             # Add the word and the comma to the result
             part1.append(word)
             current_length += len(word) + 1
         else:
+            on_part2 = True
             # Add the word at the part2
             part2.append(word)
 

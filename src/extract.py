@@ -121,8 +121,8 @@ def extractFunction(functionDeclaration: str, function: Function) -> None:
     # Extract and format parameters
     parameters = getParameters(functionDeclaration)
 
-    print(f"\nfunction: {functionDeclaration}")
-    print(f"--{functionName}({parameters})\n")
+    # print(f"\nfunction: {functionDeclaration}")
+    # print(f"--{functionName}({parameters})\n")
 
     # Format the result
     function.addFunctionName(functionName)

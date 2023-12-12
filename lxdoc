@@ -22,9 +22,9 @@ files = []
 
 # Print the list of files
 for file in filesPath:
-    file = filesPath[6]
-    print(file)
+    #file = filesPath[6]
     data = extractData(file)
+    print(f"Extract: {data.fileName}{data.extension}")
 
     rawData = data.getRawData()
     #print(rawData)
