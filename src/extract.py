@@ -75,13 +75,14 @@ def extractParam(line: str) -> tuple[str, str]:
     if len(parts) > 1:
         param_name = parts[1]
         description = ' '.join(parts[2:])
+        description = formatString(description)
         return param_name, description
     else:
         return "", ""
     
 
 def extractReturn(line: str) -> str:
-    return ' '.join(line.split()[1:])
+    return formatString(' '.join(line.split()[1:]))
 
 def extractComment(comment: str) -> Function:
     function = Function()
@@ -109,6 +110,7 @@ def extractComment(comment: str) -> Function:
             continue
         else:
             extracted_comment += line.strip() + ' '
+    extracted_comment = formatString(extracted_comment)
     function.addDescription(extracted_comment)
     return function
 
@@ -184,3 +186,21 @@ def getParameters(functionDeclaration: str) -> list[str]:
     parameters.append(temp)
     return parameters
 
+def formatString(string: str) -> str:
+    # Capitalize the first letter
+    formatted_string = string.capitalize()
+
+    # Remove trailing spaces
+    formatted_string = formatted_string.rstrip()
+
+    # Add a '.' at the end if not present
+    if not formatted_string.endswith('.'):
+        formatted_string += '.'
+
+    # Define a regular expression pattern to match "`CODE`"
+    pattern = r'`([^`]+)`'
+
+    # Use re.sub to replace matches with the desired format
+    formatted_string = re.sub(pattern, r'\\code{\1}', formatted_string)
+
+    return formatted_string
