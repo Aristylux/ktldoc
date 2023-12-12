@@ -16,7 +16,12 @@ def generateLatex(dataFile: DataFile) -> str:
     return latexOutput
 
 def generateLatexFunction(function: Function, filename: str) -> str:
-    latexOutput = f"\\begin{{func}}{{{filename}.{function.getFonctionDec()}}}\n"
+    dec1, dec2 = splitAtLength(f"{filename}.{function.getFonctionDec()}")
+
+    if dec2 == "":
+        latexOutput = f"\\begin{{func}}{{{dec1}}}\n"
+    else:
+        latexOutput = f"\\begin{{funcsplit}}{{{dec1}}}{{{dec2}}}\n"
 
     if function.description:
         latexOutput += f"    \\item {function.description}\n"
@@ -57,3 +62,28 @@ def generateLatexMain(files: list[DataFile]) -> str:
     latexOutput += "\\end{document}\n\n"
 
     return latexOutput
+
+
+def splitAtLength(string: str, maxlen: int =100) -> tuple[str, str]:
+    words = string.split(', ')
+    part1 = []
+    part2 = []
+    current_length = 0
+
+    for word in words:
+        # Check if adding the current word exceeds the maximum length
+        if current_length + len(word) + 1 <= maxlen:
+            # Add the word and the comma to the result
+            part1.append(word)
+            current_length += len(word) + 1
+        else:
+            # Add the word at the part2
+            part2.append(word)
+
+    # Join the result list into a string using ', ' as the separator
+    formatted_part1 = ', '.join(part1)
+    if len(part1) > 1 and len(part2) > 0:
+        formatted_part1 += ","
+    formatted_part2 = ', '.join(part2)
+
+    return formatted_part1, formatted_part2
