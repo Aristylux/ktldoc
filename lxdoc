@@ -22,8 +22,8 @@ files = []
 
 # Print the list of files
 for file in filesPath:
-    #file = filesPath[0]
-    #print(file)
+    file = filesPath[6]
+    print(file)
     data = extractData(file)
 
     rawData = data.getRawData()

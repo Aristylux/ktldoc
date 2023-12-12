@@ -121,8 +121,8 @@ def extractFunction(functionDeclaration: str, function: Function) -> None:
     # Extract and format parameters
     parameters = getParameters(functionDeclaration)
 
-    # print(f"\nfunction: {functionDeclaration}")
-    # print(f"--{functionName}({parameters})\n")
+    print(f"\nfunction: {functionDeclaration}")
+    print(f"--{functionName}({parameters})\n")
 
     # Format the result
     function.addFunctionName(functionName)
@@ -154,36 +154,25 @@ def getEnumName(enumDeclaration: str) -> str:
 
 def getParameters(functionDeclaration: str) -> list[str]:
     formatFun = functionDeclaration.replace(" ", "")
-    temp = ""
     parameters = []
-    save_parameters = False
-    in_parameter = False
 
-    for char in formatFun:
-        # Enter in '(...)'
-        if char == '(' and not save_parameters:
-            save_parameters = True
-            in_parameter = True
-        # End of the function "fun .. (...) : ... {"
-        elif char == '{' and save_parameters:
-            break
-        # Inside '(...)'
-        elif save_parameters:
-            #print(f"inside param: {char}")
-            if char == ':':
-                in_parameter = False
-            elif char == ',' and not in_parameter:
-                in_parameter = True
-            
-            if in_parameter:
-                if char == ' ' or char == ',':
-                    parameters.append(temp)
-                    #temp += ', '
-                    temp = ""
-                else:
-                    temp += char
-    # Append last parameter
-    parameters.append(temp)
+    # Define a regular expression pattern to match the content inside the first pair of parentheses
+    pattern = r'\((.*?)\)'
+
+    # Use re.search to find the first match in the input string
+    match = re.search(pattern, formatFun)
+
+    # Check if there is a match and return the captured content group
+    if match:
+        # Split the string at the first occurrence of ':'
+        parts = match.group(1).split(',')
+        for part in parts:
+            if ':' in part:
+                param = part.split(":")
+                # Check if there is at least one part
+                if len(param) > 0:
+                    parameters.append(param[0])
+
     return parameters
 
 def formatString(string: str) -> str:
