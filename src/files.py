@@ -51,9 +51,13 @@ def listFiles(directory: str, extension: str) -> list[str]:
 
 def createOutputDir(projectName: str):
     directoryName = "output_" + projectName.lower()
+    directoryFileName = os.path.join(directoryName, "files")
     # Create the directory if it doesn't exist
     if not os.path.exists(directoryName):
         os.makedirs(directoryName)
+
+    if not os.path.exists(directoryFileName):
+        os.makedirs(directoryFileName)
 
 
 
