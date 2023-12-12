@@ -41,10 +41,10 @@ for file in filesPath:
     latexContent = generateLatex(data)
     files.append(data)
 
-    print(latexContent)
+    #print(latexContent)
 
-    # writeFile(projectName, "files/" + data.getFileName() + ".tex", latexContent)
+    writeFile(projectName, "files/" + data.getFileName() + ".tex", latexContent)
 
 
 latexMain = generateLatexMain(files)
-# writeFile(projectName, "main.tex", latexMain)
+writeFile(projectName, "main.tex", latexMain)

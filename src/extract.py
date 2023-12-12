@@ -197,6 +197,9 @@ def formatString(string: str) -> str:
     if not formatted_string.endswith('.'):
         formatted_string += '.'
 
+    # Replace every '\' with '\\'
+    formatted_string = formatted_string.replace('\\', '\\\\')
+
     # Define a regular expression pattern to match "`CODE`"
     pattern = r'`([^`]+)`'
 
