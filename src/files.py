@@ -2,7 +2,7 @@ import os # For getting path and navigating
 
 #[project name]/app/src/main/java/[com/example]/[.kt and packages]
 
-def getFiles(extension: str) -> list[str]:
+def getFiles(extension: str) -> tuple[list[str], str]:
 
     current_directory = os.getcwd()
     print("Project Directory:", current_directory)
@@ -13,7 +13,7 @@ def getFiles(extension: str) -> list[str]:
 
     navigateToFinalDir(target_directory)
 
-    return listFiles(target_directory, extension)
+    return listFiles(target_directory, extension), os.path.basename(current_directory)
 
     
 def navigateToFinalDir(source_dir: str):
@@ -44,3 +44,29 @@ def listFiles(directory: str, extension: str) -> list[str]:
             if filename.endswith(extension):
                 files.append(os.path.join(root, filename))
     return files
+
+
+
+# ---- Saving ----
+
+def createOutputDir(projectName: str):
+    directoryName = "output_" + projectName.lower()
+    # Create the directory if it doesn't exist
+    if not os.path.exists(directoryName):
+        os.makedirs(directoryName)
+
+
+
+def createFilesDir(projectName: str):
+    directoryName = "output_" + projectName.lower() + "/sections"
+    # Create the directory if it doesn't exist
+    if not os.path.exists(directoryName):
+        os.makedirs(directoryName)
+
+def writeFile(projectName: str, fileName: str, content: str):
+    # Create the file path by joining the directory and file names
+    file_path = os.path.join("output_" + projectName.lower(), fileName)
+
+    # Open the file in write mode and save the string
+    with open(file_path, 'w') as file:
+        file.write(content)

@@ -14,27 +14,30 @@ checkOptions(sys.argv[1:])
 
 # --- Retrieves all project files --- 
 
-files = getFiles(".kt")
+filesPath, projectName = getFiles(".kt")
+
+createOutputDir(projectName)
+
+files = []
 
 # Print the list of files
+for file in filesPath:
+    data = extractData(file)
 
-# for file in files:
-#     print(f"{file}")
+    rawData = data.getRawData()
 
-print(files[6])
+    for i in range(len(rawData)):
+        function = extractComment(rawData[i][0])
+        extractFunction(rawData[i][1], function)
+        data.addFunction(function)
 
-data = extractData(files[6])
+    latexContent = generateLatex(data)
+    files.append(data)
 
-rawData = data.getRawData()
-for i in range(len(rawData)):
-    function = extractComment(rawData[i][0])
-    extractFunction(rawData[i][1], function)
-    data.addFunction(function)
+    #print(latexContent)
 
-    #print(function)
+    writeFile(projectName, data.getFileName() + ".tex", latexContent)
 
-#print(data)
 
-latexContent = generateLatex(data)
-
-print(latexContent)
+latexMain = generateLatexMain(files)
+writeFile(projectName, "main.tex", latexMain)

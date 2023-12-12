@@ -35,3 +35,17 @@ def generateLatexFunction(function: Function, filename: str) -> str:
 
     latexOutput += "\\end{func}\n"
     return latexOutput
+
+def generateLatexMain(files: list[DataFile]) -> str:
+    latexOutput =  "\\documentClass{article}\n\n"
+    latexOutput += "\\input{packages.tex}\n\n"
+    latexOutput += "\\begin{document}\n\n"
+
+    for file in files:
+        #print(file)
+        fileName = file.getFileName()
+        latexOutput += f"\input{{files/{fileName}}} \n\n"
+
+    latexOutput += "\\end{document}\n\n"
+
+    return latexOutput
