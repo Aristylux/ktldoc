@@ -11,7 +11,6 @@ from src.generate import *
 
 checkOptions(sys.argv[1:])
 
-
 # --- Retrieves all project files --- 
 
 filesPath, projectName = getFiles()
@@ -41,7 +40,7 @@ for file in filesPath:
     latexContent = generateLatex(data)
     files.append(data)
 
-    #print(latexContent)
+    print(latexContent)
 
     #writeFile(projectName, "files/" + data.getFileName() + ".tex", latexContent)
 

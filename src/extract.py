@@ -8,12 +8,12 @@ def extractData(file_path: str) -> DataFile:
     datafile = DataFile()
 
     # Get the filename without extension
-    file = os.path.splitext(os.path.basename(file_path))
-    namename = file[0]
-    extension = file[1]
+    namename, extension = os.path.splitext(os.path.basename(file_path))
 
     datafile.setFilename(namename)
     datafile.setExtension(extension)
+
+    # -- depending of the extensions --
 
     with open(file_path, 'r') as file:
         format_function = False

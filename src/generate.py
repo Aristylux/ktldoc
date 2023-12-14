@@ -47,9 +47,9 @@ def generateLatexFunction(function: Function, filename: str) -> str:
             latexOutput += f"    \\item \\enum{{{enum_name}}}{{{enum_description}}}\n"
 
     if dec2 == "":
-        latexOutput += "\\end{funcsplit}\n"
-    else:
         latexOutput += "\\end{func}\n"
+    else:
+        latexOutput += "\\end{funcsplit}\n"
     return latexOutput
 
 def generateLatexMain(files: list[DataFile]) -> str:
