@@ -15,7 +15,14 @@ def extractData(file_path: str) -> DataFile:
 
     # -- depending of the extensions --
 
-    with open(file_path, 'r') as file:
+    if datafile.getExtension() == ".kt":
+        extractKotlin(file_path, datafile)
+
+    return datafile
+    
+
+def extractKotlin(filePath: str, datafile: DataFile):
+    with open(filePath, 'r') as file:
         format_function = False
         inside_comment = False
         check_function = False
@@ -60,15 +67,10 @@ def extractData(file_path: str) -> DataFile:
                     current_function += line.strip()
             
             if format_function:
-                #print(f"Extract Comment:\n{current_comment}")
-                #print(f"Generate Function:\n{current_function}")
-                #data.append([current_comment, current_function])
                 datafile.addRawData(current_comment, current_function)
                 format_function = False
                 current_function = ""
                 current_comment = ""
-
-    return datafile
 
 def extractParam(line: str) -> tuple[str, str]:
     parts = line.split()

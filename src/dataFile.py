@@ -11,7 +11,7 @@ class FileType(Enum):
 class DataFile:
     def __init__(self) -> None:
         self.fileName = ""
-        self.extension = ""
+        self.__extension = ""
         self.__type = FileType.UNKNOWN # class, file, class activity, enum, ...
         self.__description = ""
         self.__hasDescription = False
@@ -26,7 +26,7 @@ class DataFile:
         self.fileName = fileName
 
     def setExtension(self, extension: str):
-        self.extension = extension
+        self.__extension = extension
 
     def setType(self, type: FileType):
         self.__type = type
@@ -45,6 +45,9 @@ class DataFile:
 
     def getFileName(self) -> str:
         return self.fileName
+    
+    def getExtension(self) -> str:
+        return self.__extension
     
     def getType(self) -> FileType:
         return self.__type

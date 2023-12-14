@@ -23,7 +23,7 @@ files = []
 for file in filesPath:
     #file = filesPath[6]
     data = extractData(file)
-    print(f"Extract: {data.fileName}{data.extension}")
+    print(f"Extract: {data.fileName}{data.getExtension()}")
 
     rawData = data.getRawData()
     #print(rawData)
