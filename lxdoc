@@ -29,12 +29,7 @@ for file in filesPath:
     #print(rawData)
 
     for i in range(len(rawData)):
-        function = extractComment(rawData[i][0])
-
-        if data.getType() == FileType.ENUM:
-            extractEnum(rawData[i][1], function)
-        else:
-            extractFunction(rawData[i][1], function)
+        function = extractFunction(rawData[i], data)
         data.addFunction(function)
 
     latexContent = generateLatex(data)

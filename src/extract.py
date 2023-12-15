@@ -2,7 +2,7 @@ import os
 import re
 
 from src.function import Function
-from src.dataFile import DataFile, FileType
+from src.dataFile import DataFile, FileType, RawData
 
 def extractData(file_path: str) -> DataFile:
     datafile = DataFile()
@@ -110,6 +110,20 @@ def extractKotlin(filePath: str, datafile: DataFile):
                 current_function = ""
                 current_comment = ""
 
+
+# ---
+
+def extractFunction(rawData: RawData, data: DataFile) -> Function:
+    function = extractComment(rawData.comment)
+
+    if data.getType() == FileType.ENUM:
+        extractEnum(rawData.function, function)
+    else:
+        extractDeclaration(rawData.function, function)
+
+    return function
+
+
 def extractParam(line: str) -> tuple[str, str]:
     parts = line.split()
     if len(parts) > 1:
@@ -154,7 +168,7 @@ def extractComment(comment: str) -> Function:
     function.addDescription(extracted_comment)
     return function
 
-def extractFunction(functionDeclaration: str, function: Function) -> None:
+def extractDeclaration(functionDeclaration: str, function: Function) -> None:
     # Extract the function name
     functionName = getFunctionName(functionDeclaration)
 

@@ -8,6 +8,12 @@ class FileType(Enum):
     ENUM = 2
     FILE = 3
 
+class RawData:
+    def __init__(self) -> None:
+        self.comment = ""
+        self.function = ""
+        pass
+
 class DataFile:
     def __init__(self) -> None:
         self.fileName = ""
@@ -36,7 +42,10 @@ class DataFile:
         self.__hasDescription = True
 
     def addRawData(self, comment: str, function: str):
-        self.__rawData.append([comment, function])
+        raw = RawData()
+        raw.comment = comment
+        raw.function = function
+        self.__rawData.append(raw)
 
     def addFunction(self, function: Function):
         self.functions.append(function)
@@ -58,7 +67,7 @@ class DataFile:
     def hasDescription(self) -> bool:
         return self.__hasDescription
 
-    def getRawData(self):
+    def getRawData(self) -> list[RawData]:
         return self.__rawData
     
     def getFunctions(self) -> list[Function]:
