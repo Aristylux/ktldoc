@@ -18,14 +18,6 @@ def extractData(file_path: str) -> DataFile:
     datafile.setFilename(namename)
     datafile.setExtension(extension)
 
-    # -- depending of the extensions --
-
-    # if datafile.getExtension() == ".kt":
-    #     extractKotlin(file_path, datafile)
-    # elif datafile.getExtension() == ".py":
-    #     extractPython(file_path, datafile)
-
-
     if datafile.getExtension() == ".kt":
         extractor = KotlinExtractor()
     elif datafile.getExtension() == ".py":
@@ -34,99 +26,10 @@ def extractData(file_path: str) -> DataFile:
         extractor = None
 
     if extractor is not None:
-        extractor.extract("")
+        extractor.extract(file_path, datafile)
 
     return datafile
     
-def extractPython(filePath: str, datafile: DataFile):
-    with open(filePath, 'r') as file:
-
-        maybe_comment = False
-        in_comment = False
-        current_comment = ""
-
-        current_function = ""
-
-        format_function = False
-
-        for line in file:
-            formLine = line.strip()
-
-            if formLine.startswith('# ') and not maybe_comment:
-                maybe_comment = True
-                current_comment = formLine + "\n"
-            elif formLine == "":
-                maybe_comment = False
-                current_comment = "" # Clean comment
-            elif formLine.startswith('# @') and maybe_comment:
-                in_comment = True
-                current_comment += formLine + "\n"
-
-            # End of the comment, check the function
-            elif not formLine.startswith('# ') and in_comment:
-                #print(current_comment)
-                in_comment = False
-                format_function = True
-                current_function = formLine
-            
-            if format_function:
-                datafile.addRawData(current_comment, current_function)
-                current_comment = ""
-                current_function = ""
-                format_function = False
-
-def extractKotlin(filePath: str, datafile: DataFile):
-    with open(filePath, 'r') as file:
-        format_function = False
-        inside_comment = False
-        check_function = False
-        inside_function = False
-        current_comment = ""
-        current_function = ""
-
-        # Read line by line
-        for line in file:
-            if line.lstrip().startswith('/**') and not re.search('[a-zA-Z]', line):
-                inside_comment = True
-                current_comment = ""
-            
-            elif inside_comment and line.lstrip().startswith('*/'):
-                inside_comment = False
-                check_function = True
-
-            elif inside_comment:
-                current_comment += line
-
-            elif check_function:
-                # FUNCTION In one line
-                if re.search(r'\bfun\b', line) and (re.search(r'[\s]*{', line) or re.search(r'{', line)): #and line.strip().endswith('{'):
-                    current_function = line.strip()
-                    format_function = True
-                # FUNCTION More than one line
-                elif re.search(r'\bfun\b', line):
-                    current_function = line.strip()
-                    inside_function = True
-                # ENUM
-                elif re.search(r'\benum class\b', line):
-                    current_function = line.strip()
-                    datafile.setType(FileType.ENUM)
-                    format_function = True
-                
-                elif inside_function and (re.search(r'[\s]*{', line) or re.search(r'{', line)):
-                    current_function += line.strip()
-                    inside_function = False
-                    format_function = True
-
-                elif inside_function:
-                    current_function += line.strip()
-            
-            if format_function:
-                datafile.addRawData(current_comment, current_function)
-                format_function = False
-                current_function = ""
-                current_comment = ""
-
-
 # ---
 
 def extractFunction(rawData: RawData, data: DataFile) -> Function:
