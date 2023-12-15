@@ -4,6 +4,11 @@ import re
 from src.function import Function
 from src.dataFile import DataFile, FileType, RawData
 
+from src.extractors.kotlin import KotlinExtractor
+from src.extractors.python import PythonExtractor
+
+
+
 def extractData(file_path: str) -> DataFile:
     datafile = DataFile()
 
@@ -15,10 +20,21 @@ def extractData(file_path: str) -> DataFile:
 
     # -- depending of the extensions --
 
+    # if datafile.getExtension() == ".kt":
+    #     extractKotlin(file_path, datafile)
+    # elif datafile.getExtension() == ".py":
+    #     extractPython(file_path, datafile)
+
+
     if datafile.getExtension() == ".kt":
-        extractKotlin(file_path, datafile)
+        extractor = KotlinExtractor()
     elif datafile.getExtension() == ".py":
-        extractPython(file_path, datafile)
+        extractor = PythonExtractor()
+    else:
+        extractor = None
+
+    if extractor is not None:
+        extractor.extract("")
 
     return datafile
     
