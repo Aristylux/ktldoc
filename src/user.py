@@ -3,6 +3,9 @@ def checkOptions(args: list[str]) -> int:
         printHelp()
         return 1 # Quit
     
+    if "-f" in args or "--file" in args:
+        return 2
+    
 
 def printHelp():
     print("Usage: lxdoc [OPTION]...")
@@ -11,5 +14,9 @@ def printHelp():
 
     print("Options:")
     print("  -h,  --help  print this help")
-    print("  -kt          latex documentation for Kotlin")
-    print("  -py          latex documentation from Python")
+
+    print("  -f,  --file  create the documentation for the file")
+
+    # Not really needed because: detect extension
+    # print("  -kt          latex documentation for Kotlin")
+    # print("  -py          latex documentation from Python")
