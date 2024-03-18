@@ -1,8 +1,11 @@
+from src.dataFile import RawData
+from src.function import Function
 from src.extractors.extractorInterface import ExtractorInterface
 
 import re
 
 from src.dataFile import DataFile, FileType
+
 
 class KotlinExtractor(ExtractorInterface):
 
@@ -56,3 +59,14 @@ class KotlinExtractor(ExtractorInterface):
                     format_function = False
                     current_function = ""
                     current_comment = ""
+
+    # NEED TO BE TESTED
+    def extractFunction(self, rawData: RawData, data: DataFile) -> Function:
+        function = extractComment(rawData.comment)
+
+        if data.getType() == FileType.ENUM:
+            extractEnum(rawData.function, function)
+        else:
+            extractDeclaration(rawData.function, function)
+
+        return function

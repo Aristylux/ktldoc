@@ -19,8 +19,10 @@ def extractData(file_path: str) -> DataFile:
     datafile.setExtension(extension)
 
     if datafile.getExtension() == ".kt":
+        print("Use of KotlinExtractor")
         extractor = KotlinExtractor()
     elif datafile.getExtension() == ".py":
+        print("Use of PythonExtractor")
         extractor = PythonExtractor()
     else:
         extractor = None
@@ -32,13 +34,19 @@ def extractData(file_path: str) -> DataFile:
     
 # ---
 
-def extractFunction(rawData: RawData, data: DataFile) -> Function:
-    function = extractComment(rawData.comment)
+def extractFunction(rawData: RawData, datafile: DataFile) -> Function:
 
-    if data.getType() == FileType.ENUM:
-        extractEnum(rawData.function, function)
+    if datafile.getExtension() == ".kt":
+        print("Use of KotlinExtractor")
+        extractor = KotlinExtractor()
+    elif datafile.getExtension() == ".py":
+        print("Use of PythonExtractor")
+        extractor = PythonExtractor()
     else:
-        extractDeclaration(rawData.function, function)
+        extractor = None
+
+    if extractor is not None:
+        function = extractor.extractFunction(rawData, datafile)
 
     return function
 

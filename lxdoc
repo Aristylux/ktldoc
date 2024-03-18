@@ -30,13 +30,13 @@ for file in filesPath:
     for i in range(len(rawData)):
         print(rawData[i].function)
         function = extractFunction(rawData[i], data)
-        print(function)
+        # print(function)
         data.addFunction(function)
 
     latexContent = generateLatex(data)
     files.append(data)
 
-    # print(latexContent)
+    print(latexContent)
 
     #writeFile(projectName, "files/" + data.getFileName() + ".tex", latexContent)
 
