@@ -28,8 +28,8 @@ class PythonExtractor(ExtractorInterface):
                     in_comment = True
                     current_comment += formLine + "\n"
 
-                # End of the comment, check the function
-                elif not formLine.startswith('# ') and in_comment:
+                # End of the comment, check the function ||| add '@' for async function?
+                elif not formLine.startswith('# ') and in_comment and not formLine.startswith('@'):
                     #print(current_comment)
                     in_comment = False
                     format_function = True
