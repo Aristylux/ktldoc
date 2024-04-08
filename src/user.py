@@ -17,6 +17,8 @@ def printHelp():
 
     print("  -f,  --file  create the documentation for the file")
 
+    print("  -p,  --print   print output on terminal only")
+
     # Not really needed because: detect extension
     # print("  -kt          latex documentation for Kotlin")
     # print("  -py          latex documentation from Python")
