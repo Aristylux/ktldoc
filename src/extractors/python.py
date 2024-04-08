@@ -76,14 +76,14 @@ class PythonExtractor(ExtractorInterface):
 
         lines = comment.split('\n')
         for line in lines:
-            # General
+            # --- General ---
             line = re.sub(r'\s+', ' ', line)       # Replace multiple spaces with a single space
-            
+            # ---
+
             # Specific to .py
             line = line.lstrip('#').lstrip()
 
-            # General ---
-
+            # --- General ---
             # Param line
             if re.match(r'\s*@param', line):
                 function.addParameter(self.extractParam(line.strip()))
@@ -95,8 +95,10 @@ class PythonExtractor(ExtractorInterface):
                 function.addNote(self.extractReturn(line.strip()))
             # Empty line
             elif re.match(r'\s*\*', line):
+                # print(f"Empty line: {line}")
                 continue
             else:
+                # /!\ check here if param, return and note comment is on 2 lines
                 extracted_comment += line.strip() + ' '
 
         extracted_comment = self.formatString(extracted_comment)
