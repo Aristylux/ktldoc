@@ -1,3 +1,2 @@
-src/__pycache__/extract.cpython-311.pyc
-src/__pycache__/user.cpython-311.pyc
-src/extractors/__pycache__/python.cpython-311.pyc
+src/extractors/__pycache__/*
+src/__pycache__/*
